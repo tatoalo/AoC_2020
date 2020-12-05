@@ -55,7 +55,7 @@ def main():
     if DEBUG:
         data = read_input("testData")
     else:
-        data = read_input("data2")
+        data = read_input("data3")
 
     print(f"Valid OLD POLICY passwords: {extrapolate_data(data)}")
     print(f"Valid NEW POLICY passwords: {extrapolate_data_part_2(data)}")
