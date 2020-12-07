@@ -67,6 +67,18 @@ def sanity_check(maxID, currentID):
     return maxID
 
 
+def retrieve_personal_seat_ID(list_ID):
+    list_ID.sort()
+    generated_values = [i for i in range(list_ID[0], list_ID[len(list_ID)-1]+1)]
+
+    missing_generated = []
+    for _ in generated_values:
+        if _ not in list_ID:
+            missing_generated.append(_)
+
+    return missing_generated[0]
+
+
 def main():
     DEBUG = False
     if DEBUG:
@@ -75,15 +87,20 @@ def main():
         data = read_input("data5")
 
     max_seat_ID = 0
+    list_ID = []
     for d in data:
         row = retrieve_row(d)
         column = retrieve_column(d)
         seat_ID = retrieve_seat_ID(row, column)
 
+        list_ID.append(seat_ID)
         max_seat_ID = sanity_check(max_seat_ID, seat_ID)
         print(f"Row: {row}, Column: {column}, Seat ID: {seat_ID}")
 
     print(f"Largest ID: {max_seat_ID}")
+    print()
+
+    print(f"My seat ID: {retrieve_personal_seat_ID(list_ID)}")
 
 
 if __name__ == "__main__":
