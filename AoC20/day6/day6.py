@@ -45,6 +45,51 @@ def count_positive_responses(responses):
     return pos
 
 
+# Part 2 policy enforcement
+def count_positive_responses_everyone_policy(responses):
+    pos = 0
+
+    for group in responses:
+        if len(group) == 1:
+            # print(f"Adding {len(group[0])} for {group}")
+            pos += len(group[0])
+        else:
+            common_responses = []
+            for single_response in group:
+                if len(single_response) == 1:
+                    if len(common_responses) == 0:
+                        common_responses.append(single_response)
+                    elif single_response not in common_responses:
+                        break
+
+                else:
+                    pos += corner_case(group)
+                    break
+
+    return pos
+
+
+def corner_case(group):
+    # print("***")
+    # print(f"corner case for {group}")
+    pos_found = 0
+    all_responses = []
+    target_quorum = len(group)
+
+    for single_response in group:
+        for inner in single_response:
+            all_responses.append(inner)
+
+    # Calculating occurrences
+    occurrences = [[x, all_responses.count(x)] for x in set(all_responses)]
+    for elem, val in occurrences:
+        if val == target_quorum:
+            # print(f"found {elem} with {val}")
+            pos_found += 1
+
+    # print("***")
+    return pos_found
+
 
 def main():
     DEBUG = False
@@ -53,10 +98,10 @@ def main():
     else:
         data = read_input("data6")
 
-    print(data)
     positive_responses = extrapolate_positive_responses(data)
     print(f"Positive responses: {positive_responses}")
-    print(f"Number of unique positive responses: {count_positive_responses(positive_responses)}")
+    print(f"Number of unique positive responses (OLD POLICY): {count_positive_responses(positive_responses)}")
+    print(f"Number of unique positive responses (NEW POLICY): {count_positive_responses_everyone_policy(positive_responses)}")
 
 
 if __name__ == "__main__":
